@@ -1,4 +1,4 @@
-# gen-slater
+# GEN-SLATER
 
 Have you ever wanted to correctly communicate with a friend or family member who is from a different generation, and thus uses completely different slang? Now that is finally possible with the still-in-development GEN-SLATER. Using an OpenAI API, this application uses next word prediction models to consistently translate your slang to slang of another generation.
 
