@@ -1,7 +1,7 @@
 <!doctype html>
 <html>
   <head>
-    <title>OpenAI Chat</title>
+    <title>GEN-SLATER</title>
     <link
       rel="stylesheet"
       href="{{ url_for('static', filename='main.css') }}"
@@ -13,7 +13,7 @@
         src="{{ url_for('static', filename='icon.png') }}"
         alt="OpenAI Logo"
       />
-      <div class="demo-text">Demo</div>
+      <div class="GEN-SLATER">GEN-SLATER</div>
     </div>
     <div class="chat-container">
     </div>
@@ -26,6 +26,7 @@
           <option value="Baby Boomers">Baby Boomers</option>
           <option value="Generation Beta">Gen Beta</option>
         </select>
+        <small style="color: #888; margin-left: 10px;">← Translate to this generation's slang</small>
         <textarea
           name="message"
           placeholder="Type your text to translate..."
@@ -58,7 +59,7 @@
             roleDiv.classList.add("message-role");
             roleDiv.classList.add("user");
 
-            roleDiv.textContent = "User";
+            roleDiv.textContent = "PROMPT";
             chatContainer.appendChild(roleDiv);
 
             const userMessageDiv = document.createElement("div");
@@ -85,7 +86,7 @@
                 roleDiv.classList.add("message-role");
                 roleDiv.classList.add("assistant");
 
-                roleDiv.textContent = "Assistant";
+                roleDiv.textContent = "RESULTS (" + generation + ")";
                 chatContainer.appendChild(roleDiv);
 
                 // Prepare the assistant's message container
