@@ -15,51 +15,51 @@ client = openai.OpenAI()
 
 app = Flask(__name__)
 
-chat_history = [
-    {"role": "system", "content": "You are a helpful assistant."},
-]
-
 
 @app.route("/", methods=["GET"])
 def index():
-    return render_template("index.html", chat_history=chat_history)
+    return render_template("index.html")
 
 
 @app.route("/chat", methods=["POST"])
 def chat():
     content = request.json["message"]
-    chat_history.append({"role": "user", "content": content})
+    generation = request.json.get("generation", "Millennials")
+    
+    # Store in Flask session or global for the stream endpoint
+    global current_message, current_generation
+    current_message = content
+    current_generation = generation
+    
     return jsonify(success=True)
 
 
 @app.route("/stream", methods=["GET"])
 def stream():
     def generate():
-        assistant_response_content = ""
+        global current_message, current_generation
+        
+        # Create system prompt based on selected generation
+        system_prompt = f"Translate the following text into {current_generation} slang. Use the language, phrases, and expressions commonly associated with {current_generation}."
+        
+        messages = [
+            {"role": "system", "content": system_prompt},
+            {"role": "user", "content": current_message}
+        ]
 
         with client.chat.completions.create(
-            model="gpt-5-mini",
-            messages=chat_history,
+            model="gpt-3.5-turbo",
+            messages=messages,
             stream=True,
+            temperature=0,
         ) as stream:
             for chunk in stream:
                 if chunk.choices[0].delta and chunk.choices[0].delta.content:
-                    # Accumulate the content only if it's not None
-                    assistant_response_content += chunk.choices[0].delta.content
                     yield f"data: {chunk.choices[0].delta.content}\n\n"
                 if chunk.choices[0].finish_reason == "stop":
-                    break  # Stop if the finish reason is 'stop'
-
-        # Once the loop is done, append the full message to chat_history
-        chat_history.append(
-            {"role": "assistant", "content": assistant_response_content}
-        )
+                    break
 
     return Response(stream_with_context(generate()), mimetype="text/event-stream")
 
 
-@app.route("/reset", methods=["POST"])
-def reset_chat():
-    global chat_history
-    chat_history = [{"role": "system", "content": "You are a helpful assistant."}]
-    return jsonify(success=True)
+

@@ -16,22 +16,19 @@
       <div class="demo-text">Demo</div>
     </div>
     <div class="chat-container">
-      {% for message in chat_history %}
-      <div class="message-role {{ 'user' if message.role == 'user' else '' }}">
-        {{ message.role.capitalize() }}
-      </div>
-      <div
-        class="{{ 'user-message' if message.role == 'user' else 'assistant-message' }}"
-      >
-        {{ message.content }}
-      </div>
-      {% endfor %}
     </div>
     <div class="message-input-container">
       <form action="/chat" method="post">
+        <select id="generation-select" name="generation">
+          <option value="Millennials">Millennials</option>
+          <option value="Generation Z">Gen Z</option>
+          <option value="Generation Alpha">Gen Alpha</option>
+          <option value="Baby Boomers">Baby Boomers</option>
+          <option value="Generation Beta">Gen Beta</option>
+        </select>
         <textarea
           name="message"
-          placeholder="Type your message here..."
+          placeholder="Type your text to translate..."
           required
         ></textarea>
         <div class="button-group">
@@ -47,8 +44,13 @@
           const messageInput = document.querySelector(
             'textarea[name="message"]'
           );
+          const generationSelect = document.getElementById("generation-select");
           const message = messageInput.value.trim();
+          const generation = generationSelect.value;
           const chatContainer = document.querySelector(".chat-container");
+
+          // Clear previous chat
+          chatContainer.innerHTML = "";
 
           // Append the user's message to the chat container
           if (message) {
@@ -68,13 +70,13 @@
           // Clear the message input
           messageInput.value = "";
 
-          // Send the user's message to the server using AJAX
+          // Send the user's message and generation to the server using AJAX
           fetch("/chat", {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
             },
-            body: JSON.stringify({ message: message }),
+            body: JSON.stringify({ message: message, generation: generation }),
           })
             .then((response) => response.json())
             .then((data) => {
@@ -113,30 +115,6 @@
                 };
               }
             });
-        });
-
-      // Add event listener for the clear button
-      document
-        .getElementById("clear-btn")
-        .addEventListener("click", function () {
-          // Clear the chat container
-          const chatContainer = document.querySelector(".chat-container");
-          chatContainer.innerHTML = "";
-
-          // Re-insert the initial system message as an assistant message
-          const systemMessageDiv = document.createElement("div");
-          systemMessageDiv.classList.add("assistant-message"); // Use the assistant message class
-          systemMessageDiv.textContent = "You are a helpful assistant.";
-          chatContainer.appendChild(systemMessageDiv);
-
-          // Reset the chat history on the server
-          fetch("/reset", {
-            method: "POST",
-          }).then((response) => {
-            if (response.ok) {
-              console.log("Chat history has been reset.");
-            }
-          });
         });
     </script>
   </body>
