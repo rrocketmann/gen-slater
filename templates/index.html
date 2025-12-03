@@ -50,8 +50,7 @@
           const generation = generationSelect.value;
           const chatContainer = document.querySelector(".chat-container");
 
-          // Clear previous chat
-          chatContainer.innerHTML = "";
+          // Don't clear previous chat - keep history
 
           // Append the user's message to the chat container
           if (message) {
@@ -86,7 +85,13 @@
                 roleDiv.classList.add("message-role");
                 roleDiv.classList.add("assistant");
 
-                roleDiv.textContent = "RESULTS (" + generation + ")";
+                roleDiv.textContent = "RESULTS ";
+                
+                const generationTag = document.createElement("span");
+                generationTag.classList.add("generation-tag");
+                generationTag.textContent = generation;
+                
+                roleDiv.appendChild(generationTag);
                 chatContainer.appendChild(roleDiv);
 
                 // Prepare the assistant's message container
