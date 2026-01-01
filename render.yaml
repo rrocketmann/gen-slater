@@ -1,0 +1,12 @@
+services:
+  - type: web
+    name: gen-slater
+    env: python
+    plan: free
+    buildCommand: "pip install -r requirements.txt"
+    startCommand: "gunicorn --bind 0.0.0.0:$PORT app:app"
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.13.7
+      - key: OPENAI_API_KEY
+        sync: false

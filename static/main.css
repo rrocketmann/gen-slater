@@ -294,12 +294,18 @@ input[type="text"] {
   justify-content: flex-start; /* Align items to the start of the container */
   background-color: white;
   width: 100%; /* Ensure the header spans the full width */
-  padding: 10px 0; /* Add some vertical padding */
+  padding: 14px 0; /* Add some vertical padding */
 }
 
 .header img {
   height: 20px;
   margin-right: 10px;
+}
+
+.GEN-SLATER {
+  font-size: 28px;
+  font-weight: 800;
+  letter-spacing: 1px;
 }
 
 .header .demo-text {
@@ -329,4 +335,18 @@ input[type="text"] {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.generation-tag {
+  display: inline-block;
+  padding: 2px 6px;
+  margin-left: 6px;
+  background-color: #10a37f;
+  color: white;
+  border-radius: 3px;
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border: 1px solid #c5c5d2;
 }

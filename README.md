@@ -1,10 +1,10 @@
 # gen-slater
 
-Have you ever wanted to correctly communicate with a friend or family member who is from a different generation, and thus uses completely different slang? Now that is finally possible with the still-in-development GEN-SLATER. Using an OpenAI API, this application uses next word prediction models to consistently translate your slang to slang of another generation.
+Have you ever wanted to correctly communicate with a friend or family member who is from a different generation, and thus uses completely different slang? Now that is finally possible with GEN-SLATER. With an API key, this application uses a next-word-prediction-model to consistently translate your slang to slang of another generation.
 
 ## Installation and Initialization
 
-There are some very simple steps in order for you to be able to run this application yourself. Hopefully I will be able to push it to the web so that you won't have to care about these steps.
+There are some very simple steps in order for you to be able to run this application yourself.
 
 1. Clone git repository:
    ```bash
@@ -28,4 +28,4 @@ There are some very simple steps in order for you to be able to run this applica
 
 ## Thank You!
 
-Please star this repo if you like it.
+Please star this repo if you like it and find it useful.

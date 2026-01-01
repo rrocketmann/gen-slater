@@ -1,4 +1,5 @@
 import os
+from dotenv import load_dotenv
 from flask import (
     Flask,
     render_template,
@@ -9,9 +10,14 @@ from flask import (
 )
 import openai
 
-openai.api_key = os.getenv("OPENAI_API_KEY")
+load_dotenv()
 
-client = openai.OpenAI()
+# Strip whitespace/newlines to avoid invalid auth header
+api_key = (os.getenv("OPENAI_API_KEY") or "").strip()
+openai.api_key = api_key
+
+# Pass explicit key to client to avoid relying on env formatting
+client = openai.OpenAI(api_key=api_key)
 
 app = Flask(__name__)
 
