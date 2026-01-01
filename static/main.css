@@ -18,7 +18,7 @@
 
 body,
 input {
-  line-height: 34px;
+  line-height: 38px;
   color: #353740;
   font-family: "ColfaxAI", Helvetica, sans-serif;
 }
@@ -27,7 +27,7 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  font-size: 21px;
+  font-size: 24px;
 }
 
 .icon {
@@ -43,26 +43,26 @@ h3 {
 }
 
 .chat-container {
-  max-width: 1040px;
+  max-width: 1200px;
   width: 100%;
   margin: 0 auto;
-  padding-top: 36px;
+  padding-top: 44px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding-bottom: 240px;
+  padding-bottom: 260px;
   margin-bottom: 20px;
   overflow: auto;
 }
 
 .user-message,
 .assistant-message {
-  padding: 20px 24px;
+  padding: 24px 28px;
   border-radius: 4px;
   margin-bottom: 8px;
   max-width: 80%;
   word-wrap: break-word;
-  font-size: 21px;
+  font-size: 24px;
 }
 
 .user-message {
@@ -96,7 +96,7 @@ h3 {
 }
 
 form {
-  max-width: 1040px;
+  max-width: 1200px;
   width: 100%;
   margin: 0 auto;
   display: flex;
@@ -114,9 +114,9 @@ textarea {
   margin: 0;
   margin-right: 10px;
   flex-grow: 1;
-  padding: 16px 18px;
-  max-height: 60px;
-  font-size: 19px;
+  padding: 18px 20px;
+  max-height: 70px;
+  font-size: 21px;
   box-sizing: border-box; /* Include padding in the element's total dimensions */
 }
 
@@ -128,10 +128,10 @@ select {
   background-color: #fff;
   color: #353740;
   font-family: "ColfaxAI", Helvetica, sans-serif;
-  font-size: 19px;
+  font-size: 21px;
   cursor: pointer;
-  min-width: 200px;
-  height: 48px;
+  min-width: 220px;
+  height: 54px;
   box-sizing: border-box;
 }
 
@@ -327,9 +327,9 @@ input[type="text"] {
 }
 
 #send-btn {
-  width: 60px;
-  height: 48px;
-  border-radius: 9px;
+  width: 68px;
+  height: 54px;
+  border-radius: 10px;
   border: 1px solid #c5c5d2;
   background-color: #10a37f;
   color: #fff;
