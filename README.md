@@ -9,16 +9,20 @@ There are some very simple steps in order for you to be able to run this applica
 1. Clone git repository:
    ```bash
    git clone https://github.com/rrocketmann/gen-slater
+   cd gen-slater
    ```
 
-2. Install dependencies:
+2. Create virtual environment and install dependencies:
    ```bash
+   python3 -m venv venv
+   source venv/bin/activate
    pip install -r requirements.txt
    ```
 
-3. Initialize your API key:
+3. Set up your API key:
    ```bash
-   export OPENAI_API_KEY='your-api-key-here'
+   cp .env.example .env
+   # Edit .env and add your OpenAI API key
    ```
 
 4. Run application:
@@ -28,4 +32,6 @@ There are some very simple steps in order for you to be able to run this applica
 
 ## Thank You!
 
-Please star this repo if you like it and find it useful.
+Please star this repo if you like it and find it useful. 
+
+**Live Demo:** [gen-slater.onrender.com](https://gen-slater.onrender.com) (Note: May sleep after inactivity on free tier)
