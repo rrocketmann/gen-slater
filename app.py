@@ -61,7 +61,7 @@ Rules:
         ]
 
         with client.chat.completions.create(
-            model="gpt-5-mini",
+            model="gpt-4o-mini",
             messages=messages,
             stream=True,
             temperature=0,
