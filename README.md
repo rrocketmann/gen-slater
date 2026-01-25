@@ -1,6 +1,6 @@
 # gen-slater
 
-Have you ever wanted to correctly communicate with a friend or family member who is from a different generation, and thus uses completely different slang? Now that is finally possible with GEN-SLATER. With an API key, this application uses a next-word-prediction-model to consistently translate your slang to slang of another generation.
+Have you ever wanted to correctly communicate with a friend or family member of a different generation, and thus uses incomprehensible slang? Now that is finally possible with GEN-SLATER. With an API key, this application uses a next-word-prediction-model to consistently translate your slang to slang of another generation.
 
 ## Installation and Initialization
 
