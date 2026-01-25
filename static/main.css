@@ -37,10 +37,10 @@ body {
 }
 
 .logo {
-  font-size: 24px;
-  font-weight: 700;
-  color: #10a37f;
-  letter-spacing: 0.5px;
+  font-size: 28px;
+  font-weight: 800;
+  letter-spacing: 1px;
+  color: rgb(53, 55, 64);
 }
 
 .container {
