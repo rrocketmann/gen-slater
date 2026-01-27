@@ -1,15 +1,16 @@
 <!doctype html>
-<html>
+<html lang="en">
   <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GEN-SLATER</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
   </head>
   <body>
-    <h1>GEN-SLATER</h1>
+    <header class="header">GEN-SLATER</header>
 
-    <div class="container">
-      <div class="input-box">
-        <textarea id="input-text" placeholder="Enter text"></textarea>
+    <main class="main">
+      <div class="controls">
         <select id="generation-select">
           <option value="Millennials">Millennials</option>
           <option value="Generation Z">Gen Z</option>
@@ -18,78 +19,91 @@
           <option value="Generation Beta">Gen Beta</option>
         </select>
       </div>
-      <div class="output-box">
-        <div id="output-text">Translation will appear here</div>
-        <button id="translate-btn">Translate</button>
-      </div>
-    </div>
+
+      <section class="messages" id="messages"></section>
+
+      <form class="form" id="chat-form">
+        <textarea
+          name="message"
+          id="message-input"
+          placeholder="Enter text to translate..."
+          required
+        ></textarea>
+        <button type="submit" id="send-btn">Translate</button>
+      </form>
+
+      <div class="status" id="status"></div>
+    </main>
 
     <script>
-      const inputText = document.getElementById("input-text");
-      const outputText = document.getElementById("output-text");
-      const translateBtn = document.getElementById("translate-btn");
-      const generationSelect = document.getElementById("generation-select");
-      
-      // Translate on button click
-      translateBtn.addEventListener("click", function (event) {
+      const form = document.getElementById('chat-form');
+      const messageInput = document.getElementById('message-input');
+      const messages = document.getElementById('messages');
+      const status = document.getElementById('status');
+      const sendBtn = document.getElementById('send-btn');
+      const generationSelect = document.getElementById('generation-select');
+
+      function addMessage(role, text) {
+        const wrapper = document.createElement('div');
+        wrapper.className = `message ${role}`;
+
+        const roleLabel = document.createElement('div');
+        roleLabel.className = 'role';
+        roleLabel.textContent = role === 'assistant' ? 'TRANSLATED' : 'ORIGINAL';
+
+        const body = document.createElement('div');
+        body.textContent = text;
+
+        wrapper.appendChild(roleLabel);
+        wrapper.appendChild(body);
+        messages.appendChild(wrapper);
+        messages.scrollTop = messages.scrollHeight;
+      }
+
+      form.addEventListener('submit', function (event) {
         event.preventDefault();
-        const message = inputText.value.trim();
+
+        const message = messageInput.value.trim();
+        if (!message) return;
+
+        addMessage('user', message);
+        messageInput.value = '';
+        sendBtn.disabled = true;
+        status.textContent = 'Translating...';
+
         const generation = generationSelect.value;
 
-        if (!message) {
-          return;
-        }
-
-        // Show loading state
-        outputText.textContent = "Translating...";
-        translateBtn.disabled = true;
-
-        // Send the user's message and generation to the server using AJAX
-        fetch("/chat", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ message: message, generation: generation }),
+        fetch('/chat', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ message, generation }),
         })
           .then((response) => response.json())
           .then((data) => {
-            if (data.success) {
-              // Clear the output
-              outputText.textContent = "";
-
-              // Open a connection to receive streamed responses
-              const eventSource = new EventSource("/stream");
-              eventSource.onmessage = function (event) {
-                const currentText = outputText.textContent;
-                const newText = event.data;
-                const lastChar = currentText.slice(-1);
-
-                // Check if we need to add a space (streamed chunks might be missing it)
-                if (/[.,!?]/.test(lastChar) && newText.charAt(0) !== " ") {
-                  outputText.textContent += " " + newText;
-                } else {
-                  outputText.textContent += newText;
-                }
-              };
-              eventSource.onerror = function () {
-                eventSource.close();
-                translateBtn.disabled = false;
-              };
+            if (!data.success) {
+              status.textContent = 'Error translating text.';
+              sendBtn.disabled = false;
+              return;
             }
-          })
-          .catch((error) => {
-            outputText.textContent = "Error translating text. Please try again.";
-            translateBtn.disabled = false;
-          });
-      });
 
-      // Submit on Ctrl+Enter
-      inputText.addEventListener("keydown", function (event) {
-        if (event.key === "Enter" && event.ctrlKey) {
-          event.preventDefault();
-          translateBtn.click();
-        }
+            addMessage('assistant', '');
+            const assistantMessage = messages.lastChild;
+
+            const eventSource = new EventSource('/stream');
+            eventSource.onmessage = function (event) {
+              assistantMessage.lastChild.textContent += event.data;
+              messages.scrollTop = messages.scrollHeight;
+            };
+            eventSource.onerror = function () {
+              eventSource.close();
+              sendBtn.disabled = false;
+              status.textContent = '';
+            };
+          })
+          .catch((err) => {
+            status.textContent = 'Error translating text. Please try again.';
+            sendBtn.disabled = false;
+          });
       });
     </script>
   </body>
