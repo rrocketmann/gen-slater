@@ -2,49 +2,34 @@
 <html>
   <head>
     <title>GEN-SLATER</title>
-    <link
-      rel="stylesheet"
-      href="{{ url_for('static', filename='main.css') }}"
-    />
+    <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}" />
   </head>
   <body>
-    <div class="header">
-      <div class="logo">GEN-SLATER</div>
-    </div>
+    <h1>GEN-SLATER</h1>
+
     <div class="container">
-      <div class="card">
-        <div class="card-header">
-          <select id="generation-select">
-            <option value="Millennials">Millennials</option>
-            <option value="Generation Z">Gen Z</option>
-            <option value="Generation Alpha">Gen Alpha</option>
-            <option value="Baby Boomers">Baby Boomers</option>
-            <option value="Generation Beta">Gen Beta</option>
-          </select>
-        </div>
-        <div class="card-body">
-          <div class="section">
-            <textarea
-              id="input-text"
-              placeholder="Enter text"
-              rows="10"
-            ></textarea>
-            <div class="section-footer">
-              <button id="translate-btn">Translate</button>
-            </div>
-          </div>
-          <div class="section">
-            <div id="output-text" class="section-content placeholder">Translation will appear here</div>
-          </div>
-        </div>
+      <div class="input-box">
+        <textarea id="input-text" placeholder="Enter text"></textarea>
+        <select id="generation-select">
+          <option value="Millennials">Millennials</option>
+          <option value="Generation Z">Gen Z</option>
+          <option value="Generation Alpha">Gen Alpha</option>
+          <option value="Baby Boomers">Baby Boomers</option>
+          <option value="Generation Beta">Gen Beta</option>
+        </select>
+      </div>
+      <div class="output-box">
+        <div id="output-text">Translation will appear here</div>
+        <button id="translate-btn">Translate</button>
       </div>
     </div>
+
     <script>
-      const form = document.querySelector("form");
       const inputText = document.getElementById("input-text");
       const outputText = document.getElementById("output-text");
       const translateBtn = document.getElementById("translate-btn");
       const generationSelect = document.getElementById("generation-select");
+      
       // Translate on button click
       translateBtn.addEventListener("click", function (event) {
         event.preventDefault();
@@ -70,9 +55,8 @@
           .then((response) => response.json())
           .then((data) => {
             if (data.success) {
-              // Clear the output and remove placeholder styling
+              // Clear the output
               outputText.textContent = "";
-              outputText.classList.remove("placeholder");
 
               // Open a connection to receive streamed responses
               const eventSource = new EventSource("/stream");
