@@ -34,6 +34,9 @@ ENEMY_SPEED = 3
 BULLET_SPEED = 10
 FIRE_COOLDOWN = 500  # milliseconds
 BOT_SIZE = 40
+BULLET_DAMAGE = 20
+RETREAT_HEALTH_THRESHOLD = 30
+CHASE_MIN_DISTANCE = 200
 
 
 class Bullet:
@@ -200,7 +203,7 @@ class EnemyBot(BattleBot):
         self.angle = math.atan2(dy, dx)
         
         # Decide behavior based on distance and health
-        if self.health < 30 and distance < self.retreat_distance:
+        if self.health < RETREAT_HEALTH_THRESHOLD and distance < self.retreat_distance:
             # Retreat if low health and too close
             self.state = "retreat"
             self.x -= math.cos(self.angle) * self.speed
@@ -208,7 +211,7 @@ class EnemyBot(BattleBot):
         else:
             # Chase player
             self.state = "chase"
-            if distance > 200:  # Stay at medium range
+            if distance > CHASE_MIN_DISTANCE:  # Stay at medium range
                 self.x += math.cos(self.angle) * self.speed
                 self.y += math.sin(self.angle) * self.speed
                 
@@ -269,7 +272,7 @@ class BattleBotsGame:
                     distance = math.sqrt(dx**2 + dy**2)
                     
                     if distance < other_bot.size // 2:
-                        other_bot.take_damage(20)
+                        other_bot.take_damage(BULLET_DAMAGE)
                         bullet.active = False
                         bot.bullets.remove(bullet)
                         break
